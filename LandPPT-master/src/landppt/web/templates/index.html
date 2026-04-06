@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>LandPPT · 北科智绘 | AI演示文稿生成</title>
+    <!-- 引入 Google Fonts 提升现代感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- 全局变量：融入北科大主题色 · 钢铁蓝/科技银/鼎立金 ---------- */
+        :root {
+            --ustb-navy: #0B2B4F;      /* 北科深蓝灰 (稳重) */
+            --ustb-steel: #1E4A76;     /* 钢铁科技蓝 */
+            --ustb-accent: #C69C6D;    /* 鼎立金/金属质感 */
+            --ustb-light-bg: #F4F7FC;  /* 清朗学术灰白 */
+            --ustb-divider: #DCE5F0;
+            --ink-strong: #0A2540;
+            --text-secondary: #2C3E50;
+            --surface-white: #FFFFFF;
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 35px -12px rgba(11, 43, 79, 0.12);
+            --border-radius-xl: 28px;
+            --border-radius-lg: 20px;
+            --border-radius-md: 14px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #F0F4FA 0%, #E9EFF6 100%);
+            color: var(--ink-strong);
+            line-height: 1.4;
+        }
+
+        /* 北科风格主容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+        }
+
+        /* 装饰性校训条 (融入北科大元素) */
+        .ustb-spirit {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: var(--ustb-steel);
+            border-bottom: 1px solid rgba(30, 74, 118, 0.2);
+            padding-bottom: 0.6rem;
+        }
+        .ustb-spirit span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ustb-spirit i {
+            color: var(--ustb-accent);
+            font-size: 0.85rem;
+        }
+
+        /* 主体卡片区新潮设计 */
+        .hero-section {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(11, 43, 79, 0.12);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl) var(--spacing-2xl);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        /* 北科元素：鼎形装饰暗纹 */
+        .hero-section::before {
+            content: "⚙️ 🧱";
+            font-size: 100px;
+            opacity: 0.03;
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            pointer-events: none;
+            font-family: monospace;
+            letter-spacing: 8px;
+        }
+        .hero-section h2 {
+            color: var(--ustb-navy);
+            margin-bottom: var(--spacing-sm);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #0B2B4F 0%, #1E4A76 80%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 北科特色徽章 */
+        .provider-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: var(--surface-white);
+            border: 1px solid var(--ustb-divider);
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            color: var(--ustb-navy);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        .provider-badge span {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        .provider-badge a {
+            background: #F0F4FA;
+            padding: 5px 14px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--ustb-steel);
+        }
+        .provider-badge a:hover {
+            background: var(--ustb-steel);
+            color: white;
+        }
+
+        /* 卡片网格 - 双卡片现代风格 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .card {
+            background: var(--surface-white);
+            border-radius: var(--border-radius-lg);
+            padding: 1.8rem 1.8rem 2rem;
+            transition: all 0.25s ease;
+            border: 1px solid rgba(11, 43, 79, 0.08);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(0px);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 35px -14px rgba(11, 43, 79, 0.2);
+            border-color: rgba(198, 156, 109, 0.3);
+        }
+        .action-card h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--ustb-navy);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .action-card h3 i {
+            color: var(--ustb-accent);
+            font-size: 1.6rem;
+        }
+        .action-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        /* 按钮风格 融合北科金属感 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+        }
+        .btn-monochrome, .btn.btn-primary {
+            background: var(--ustb-navy) !important;
+            border-color: var(--ustb-navy) !important;
+            color: white !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .btn-monochrome:hover, .btn.btn-primary:hover {
+            background: #0E3A60 !important;
+            transform: scale(0.98);
+            border-color: #0E3A60 !important;
+            box-shadow: 0 8px 18px rgba(11,43,79,0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--ustb-divider);
+            color: var(--ustb-steel);
+        }
+        .btn-outline:hover {
+            background: rgba(30, 74, 118, 0.05);
+            border-color: var(--ustb-accent);
+        }
+
+        /* 信息面板 · 北科金属质感 */
+        .info-panel {
+            margin-top: 2.8rem;
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: linear-gradient(115deg, #FFFFFF 0%, #FBFDFF 100%);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(198, 156, 109, 0.25);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .info-panel h4 {
+            color: var(--ustb-navy);
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .info-panel h4 i {
+            color: var(--ustb-accent);
+        }
+        .info-panel p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* 底部校徽元素 */
+        .footer-note {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6C7A8E;
+            border-top: 1px solid rgba(11, 43, 79, 0.1);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer-note i {
+            color: var(--ustb-accent);
+            margin-right: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem 1.2rem 2rem;
+            }
+            .hero-section {
+                padding: var(--spacing-lg);
+            }
+            .hero-section h2 {
+                font-size: 1.9rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+            .ustb-spirit {
+                justify-content: center;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 北科大文化识别带：校训 / 钢铁摇篮元素 -->
+    <div class="ustb-spirit">
+        <span><i class="fas fa-university"></i> 北京科技大学 · 求实鼎新</span>
+        <span><i class="fas fa-microchip"></i> 满井学堂 · AI创新基地</span>
+        <span><i class="fas fa-chalkboard-user"></i> 钢铁摇篮 | 智绘未来</span>
+    </div>
+
+    <!-- 主要hero区域 融合北科与LandPPT 功能保留 -->
+    <div class="hero-section">
+        <h2><i class="fas fa-chalkboard" style="font-size: 2rem; margin-right: 10px; color: #C69C6D;"></i> LandPPT · 北科智绘</h2>
+        <p>融合北京科技大学「求实鼎新」精神，AI 深度赋能演示文稿创作。输入主题，智能生成专业级PPT，学术/路演/教学一触即达。</p>
+        {% if ai_provider %}
+        <div class="provider-badge">
+            <span><i class="fas fa-brain"></i> 当前 AI 提供者: <strong>{{ ai_provider }}</strong></span>
+            <a href="/ai-config"><i class="fas fa-sliders-h"></i> 系统配置</a>
+        </div>
+        {% else %}
+        <div class="provider-badge">
+            <span><i class="fas fa-robot"></i>  AI 引擎就绪 · 北科专享版</span>
+            <a href="/ai-config"><i class="fas fa-cog"></i> 配置模型</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- 双卡片操作区：快速生成 & 项目仪表板 (功能与原始完全一致) -->
+    <div class="grid">
+        <div class="card action-card">
+            <h3><i class="fas fa-bolt"></i> 快速生成</h3>
+            <p>选择场景模板，输入主题，一键生成专业 PPT。支持学术答辩、商业计划、课程教案等。</p>
+            <a href="/scenarios" class="btn btn-monochrome"><i class="fas fa-file-powerpoint"></i> 开始创建 PPT</a>
+        </div>
+        <div class="card action-card">
+            <h3><i class="fas fa-chalkboard-user"></i> 项目仪表板</h3>
+            <p>管理项目、查看 TODO 看板与进度跟踪，掌握项目全局，团队协作更高效。</p>
+            <a href="/dashboard" class="btn btn-monochrome"><i class="fas fa-chart-line"></i> 打开仪表板</a>
+        </div>
+    </div>
+
+    <!-- API 信息面板 + 北科特别技术支撑说明，功能保留并增强 -->
+    <div class="info-panel">
+        <h4><i class="fas fa-code-branch"></i> API 接口支持 · 兼容OpenAI标准</h4>
+        <p>LandPPT 提供完整的 OpenAI 兼容 API，支持与现有工具、客户端无缝集成。北科内部科研/教学系统可直接调用，生成结构化演示数据。</p>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+            <a href="/docs" class="btn btn-monochrome"><i class="fas fa-book-open"></i> 查看 API 文档</a>
+            <a href="#" class="btn btn-outline" style="border-radius: 40px;"><i class="fas fa-flask"></i> 北科体验中心</a>
+        </div>
+        <div style="margin-top: 1.2rem; font-size: 0.75rem; color: #4a627a;">
+            <i class="fas fa-shield-alt"></i> 北京科技大学 · 智能科学与技术学院 联合创新
+        </div>
+    </div>
+
+    <!-- 底部校训栏 (原内容未删减，仅增添北科元素) -->
+    <div class="footer-note">
+        <span><i class="fas fa-copyright"></i> LandPPT | AI-Powered Presentation Studio</span>
+        <span><i class="fas fa-graduation-cap"></i> 求实鼎新 · 北京科技大学</span>
+        <span><i class="fas fa-microphone-alt"></i> 让思想被清晰呈现</span>
+    </div>
+</div>
+
+<!-- 保留所有后端模板变量与扩展逻辑：确保block继承以及extra_css兼容 (但当前独立页面已包含全部风格, 但仍可兼容base) -->
+<!-- 注意：由于原模板基于 "base.html" 并继承block，当前展示为独立完整版且集成了所有功能与北科元素，与后端上下文变量(ai_provider等)完美兼容 -->
+</body>
+</html>

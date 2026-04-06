@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 · 北科智绘 | Gen_PPT</title>
+    <link rel="icon" type="image/svg+xml" href="/static/images/landppt-logo.png">
+    <link rel="alternate icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.loli.net/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            /* 北京科技大学主题色：钢铁蓝 / 鼎立金 / 稳重黑 */
+            --ustb-navy: #0B2B4F;      /* 北科深蓝灰 */
+            --ustb-steel: #1E4A76;     /* 钢铁科技蓝 */
+            --ustb-accent: #C69C6D;    /* 鼎立金/金属质感 */
+            --ustb-light-bg: #F4F7FC;  /* 清朗学术灰白 */
+            --black: #0A2540;
+            --white: #ffffff;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-800: #2C3E50;
+            --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            background-color: var(--white);
+        }
+
+        /* Split Layout */
+        .split-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Left Side - Branding 融入北科元素 */
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(135deg, #0B2B4F 0%, #123A5E 50%, #1E4A76 100%);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 北科特色：鼎纹/钢铁纹理抽象背景 */
+        .brand-section::before {
+            content: "⚙️ 🧱 🔩";
+            font-size: 180px;
+            position: absolute;
+            bottom: -40px;
+            right: -40px;
+            opacity: 0.08;
+            pointer-events: none;
+            font-family: monospace;
+            letter-spacing: 12px;
+            white-space: pre;
+            transform: rotate(-8deg);
+        }
+
+        .brand-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(198, 156, 109, 0.2) 1px, transparent 0);
+            background-size: 40px 40px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .brand-logo img {
+            width: 64px;
+            height: 64px;
+            background-color: var(--white);
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            filter: none;
+        }
+
+        .brand-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(120deg, #FFFFFF 0%, #D4C5B0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .brand-subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.85;
+            line-height: 1.6;
+            max-width: 480px;
+            border-left: 3px solid var(--ustb-accent);
+            padding-left: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .brand-subtitle small {
+            display: block;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+
+        /* 北科校训铭牌 */
+        .motto-badge {
+            position: absolute;
+            bottom: 30px;
+            left: 40px;
+            z-index: 2;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .motto-badge i {
+            color: var(--ustb-accent);
+        }
+
+        /* Right Side - Form */
+        .form-section {
+            flex: 1;
+            background: linear-gradient(145deg, #FFFFFF 0%, #FBFDFF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+            background: rgba(255,255,255,0.96);
+            border-radius: 28px;
+            box-shadow: 0 25px 45px -12px rgba(11, 43, 79, 0.2);
+            border: 1px solid rgba(30, 74, 118, 0.12);
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ustb-navy);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-header h2 i {
+            color: var(--ustb-accent);
+            font-size: 1.8rem;
+        }
+
+        .form-header p {
+            color: var(--gray-800);
+            font-size: 0.95rem;
+            border-left: 2px solid var(--ustb-accent);
+            padding-left: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--ustb-navy);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            color: var(--black);
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--ustb-steel);
+            box-shadow: 0 4px 12px rgba(30, 74, 118, 0.12);
+        }
+
+        .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--ustb-navy);
+            color: var(--white);
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 40px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background: var(--ustb-steel);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(11, 43, 79, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 0.9rem 1rem;
+            margin-bottom: 1.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .alert-error {
+            background: #FEF2F0;
+            border-left: 4px solid #E54D2E;
+            color: #A0311A;
+        }
+
+        .alert-success {
+            background: #EFFAF5;
+            border-left: 4px solid #2C9A6E;
+            color: #1A6B48;
+        }
+
+        /* GitHub Link 北科风格 */
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.8rem;
+            color: var(--ustb-steel);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            background: rgba(30, 74, 118, 0.06);
+        }
+
+        .github-link:hover {
+            color: var(--ustb-navy);
+            background-color: rgba(11, 43, 79, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 北科特色小元素 */
+        .footer-hint {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #7C8B9C;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer-hint i {
+            color: var(--ustb-accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 960px) {
+            .split-layout {
+                flex-direction: column;
+            }
+
+            .brand-section {
+                flex: 0 0 30%;
+                padding: 2rem;
+                align-items: center;
+                text-align: center;
+            }
+
+            .brand-section::before {
+                font-size: 100px;
+                bottom: -20px;
+                right: -20px;
+            }
+
+            .brand-pattern {
+                opacity: 0.2;
+            }
+
+            .brand-logo {
+                margin-bottom: 1rem;
+                justify-content: center;
+            }
+
+            .brand-title {
+                font-size: 2.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .brand-subtitle {
+                font-size: 0.9rem;
+                text-align: left;
+                padding-left: 0.75rem;
+            }
+
+            .motto-badge {
+                bottom: 16px;
+                left: 20px;
+                font-size: 0.6rem;
+            }
+
+            .form-section {
+                flex: 1;
+                padding: 1.5rem;
+                align-items: flex-start;
+            }
+
+            .form-container {
+                margin: 0 auto;
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="split-layout">
+        <!-- Left Side: Brand + 北科大文化融入 -->
+        <div class="brand-section">
+            <div class="brand-pattern"></div>
+            <div class="brand-content">
+                <div class="brand-logo">
+                    <img src="/static/images/landppt-logo.png" alt="LandPPT Logo">
+                    <span style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">Gen_PPT</span>
+                </div>
+                <h1 class="brand-title">
+                    北科智绘<br>
+                    鼎新·演示未来
+                </h1>
+                <p class="brand-subtitle">
+                    北京科技大学 · 智能演示共创平台<br>
+                    以钢铁智慧，锻造每一页精彩。
+                    <small><i class="fas fa-chalkboard-user"></i> 求实鼎新 · 科技赋能表达</small>
+                </p>
+            </div>
+            <div class="motto-badge">
+                <i class="fas fa-university"></i> 北京科技大学 · 求实鼎新
+            </div>
+        </div>
+
+        <!-- Right Side: Login Form 保持完整功能 -->
+        <div class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>
+                        <i class="fas fa-graduation-cap"></i> 
+                        欢迎回来
+                    </h2>
+                    <p>登录北科智绘空间，延续您的创作 · 支持校园统一认证</p>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                {% if success %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    {{ success }}
+                </div>
+                {% endif %}
+
+                <form method="post" action="/auth/login" id="loginForm">
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user-astronaut"></i> 用户名 / 学工号</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="username" name="username" required placeholder="请输入用户名或北科ID"
+                                value="{{ username or '' }}" autocomplete="username">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> 密码</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="password" name="password" required placeholder="输入您的密码"
+                                autocomplete="current-password">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn" id="loginBtn">
+                        <span>登录 · 进入工作室</span>
+                        <i class="fas fa-arrow-right" style="font-size: 0.85em;"></i>
+                    </button>
+                </form>
+
+                <!-- 保持原有github链接 并增加北科风格点缀 -->
+                <div style="text-align: center;">
+                    <a href="https://www.ustb.edu.cn/" target="_blank" class="github-link">
+                        <!-- <i class="fab fa-github" style="font-size: 1.2em;"></i> -->
+                        <span>Gen_PPT</span>
+                        <i class="fas fa-external-link-alt" style="font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+
+                <div class="footer-hint">
+                    <span><i class="fas-regular fa-crown"></i> 北科 · 智能科学与技术学院</span>
+                    <span><i class="fas fa-microchip"></i> 鼎新AI引擎</span>
+                    <span><i class="fas fa-shield-alt"></i> 数据安全</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            const btn = document.getElementById('loginBtn');
+            const originalContent = btn.innerHTML;
+
+            // Add loading state (保留原有行为)
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>验证凭证中 · 北科智云</span>';
+        });
+
+        // 优雅入场动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const formContainer = document.querySelector('.form-container');
+            if(formContainer) {
+                formContainer.style.opacity = '0';
+                formContainer.style.transform = 'translateY(20px)';
+                formContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                setTimeout(() => {
+                    formContainer.style.opacity = '1';
+                    formContainer.style.transform = 'translateY(0)';
+                }, 120);
+            }
+        });
+    </script>
+</body>
+
+</html>
